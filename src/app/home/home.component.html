@@ -1,0 +1,183 @@
+<div class="container">
+
+    <div class="row pt-5 pb-5">
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h6>JWT generated</h6>
+                </div>
+                <div class="card-body">
+                    <pre>{{accessToken | json}}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h6>Authenticated user's details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6"><pre>{{accessTokenDetails | json}}</pre></div>
+                    <div class="col-md-6"><pre><button class="btn btn-danger" (click)="logout()" [disabled]="loading">Logout</button>
+                    </pre></div>
+                    </div>   
+                    
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+        
+    </div>
+    
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="formCreate" (submit)="onSubmit()">
+                        <h5 class="card-title">{{action}} Grant Form</h5>                        
+                        <div class="row" *ngIf="errors">
+                            <div class="col">
+                                <div class="alert alert-danger">
+                                    <strong>Oops!</strong> You have entered invalid credentials
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="input" id="id" formControlName="id" [(ngModel)]="grantApiService.selectedGrant.id" class="form-control" hidden/>
+                                        <label for="Name">Grant Name</label>
+                                        <input type="input" id="grant_name" formControlName="grant_name" [(ngModel)]="grantApiService.selectedGrant.grant_name" class="form-control" required/>
+                                        <div *ngIf="(formCreate.controls['grant_name'].invalid && formCreate.controls['grant_name'].touched) || formCreate.controls['grant_name'].dirty">
+                                            <small *ngIf="formCreate.controls['grant_name'].errors?.required" class="text-danger">Grant Name is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-md-3">
+                                        <label for="Name">Grant Status</label>
+                                        <select class="form-control" formControlName="statusControl" [(ngModel)]="selectedStatusOption" required>
+                                            <option *ngFor="let options of statusoptions" [value]="options.value">{{options.value}}</option>
+                                          </select>
+                                          <div *ngIf="(formCreate.controls['statusControl'].invalid && formCreate.controls['statusControl'].touched) || formCreate.controls['statusControl'].dirty">
+                                            <small *ngIf="formCreate.controls['statusControl'].errors?.required" class="text-danger">Grant Status Option is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>                          
+                                    <div class="col-md-3">
+                                        <label for="Grantor">Grantor</label>
+                                        <input type="input" id="grantor" formControlName="grantor" [(ngModel)]="grantApiService.selectedGrant.grantor" class="form-control" required/>
+                                        <div *ngIf="(formCreate.controls['grantor'].invalid && formCreate.controls['grantor'].touched) || formCreate.controls['grantor'].dirty">
+                                            <small *ngIf="formCreate.controls['grantor'].errors?.required" class="text-danger">Grantor is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="GeoLocation">Geograhical Location</label>
+                                        <input type="input" formControlName="grant_geo_location" [(ngModel)]="grantApiService.selectedGrant.grant_geo_location"  class="form-control" required/>
+                                        <div *ngIf="(formCreate.controls['grant_geo_location'].invalid && formCreate.controls['grant_geo_location'].touched) || formCreate.controls['grant_geo_location'].dirty">
+                                            <small *ngIf="formCreate.controls['grant_geo_location'].errors?.required" class="text-danger">Geograhical Location is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>
+                                </div>                                                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="Description">Description</label>
+                                        <input type="input" formControlName="grant_description" [(ngModel)]="grantApiService.selectedGrant.grant_description" class="form-control" required/>
+                                        <div *ngIf="(formCreate.controls['grant_description'].invalid && formCreate.controls['grant_description'].touched) || formCreate.controls['grant_description'].dirty">
+                                            <small *ngIf="formCreate.controls['grant_description'].errors?.required" class="text-danger">Description</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="Amount">Amount</label>
+                                        <input type="input" formControlName="grant_amount" [(ngModel)]="grantApiService.selectedGrant.grant_amount" class="form-control" required/>
+                                        <div *ngIf="(formCreate.controls['grant_amount'].invalid && formCreate.controls['grant_amount'].touched) || formCreate.controls['grant_amount'].dirty">
+                                            <small *ngIf="formCreate.controls['grant_amount'].errors?.required" class="text-danger">Amount is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <small *ngIf="formCreate.controls['grant_amount'].errors?.pattern" class="text-danger">Only Numbers Allowed.</small>
+                                        </div>
+                                    </div>
+                             
+                                    <div class="col-md-3">
+                                        <label for="Name">Currency</label>
+                                        <select class="form-control" formControlName="statusCurrency" [(ngModel)]="selectedCurrencyOption" required>
+                                            <option *ngFor="let currency of currencyoptions" [value]="currency.value">{{currency.value}}</option>
+                                          </select>
+                                          <div *ngIf="(formCreate.controls['statusCurrency'].invalid && formCreate.controls['statusCurrency'].touched) || formCreate.controls['statusCurrency'].dirty">
+                                            <small *ngIf="formCreate.controls['statusCurrency'].errors?.required" class="text-danger">Currency is required</small>
+                                            <!--question mark(?) is a safe navigation operator-->
+                                            <!--<small *ngIf="formCreate.controls['grant_name'].errors?.pattern" class="text-danger">Only Numbers Allowed, Maximum 10 Characters.</small>-->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">  
+                                        <br>                              
+                                        <button type="submit" class="btn btn-dark col-12" [disabled]="formCreate.invalid">Save</button>                                
+                                    </div>
+                                   
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <th>Grant Name</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Grantor</th>
+                        <th>Status</th>
+                        <tr *ngFor="let grant of grantApiService.grants">
+                            <td>{{grant.grant_name}}</td>
+                            <td>{{grant.grant_amount}}</td>
+                            <td>{{grant.grant_description}}</td>
+                            <td>{{grant.grantor}}</td>
+                            <td>{{grant.grant_status}}</td>
+                            <td>
+                              <button (click)="onEdit(grant)" class="btn btn-info col-4">Edit</button>
+                              <a (click)="onEdit(grant)"> | 
+                                <i class="fa fa-pencil-square-o"></i>
+                              </a>
+                              <button (click)="onDelete(grant.id)" class="btn btn-danger col-4">Delete</button>
+                              <a class="btn" (click)="onDelete(grant.id)">
+                                <i class="fa fa-trash-o"></i>
+                              </a>
+                            </td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    
+
+</div>
+
+
+    
